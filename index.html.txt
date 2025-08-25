@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avantis Dashboard – Central Ultra Profissional</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; background:#111; color:#fff; margin:0; padding:0; display:flex; flex-direction:column; align-items:center; }
+  header { width:100%; padding:20px; text-align:center; background:#222; font-size:2em; font-weight:bold; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:15px; width:95%; margin:15px 0; }
+  .section { padding:15px; border-radius:12px; transition: background 0.5s, transform 0.3s; background:#222; box-shadow:0 0 15px rgba(0,0,0,0.6);}
+  .section:hover { transform: scale(1.02); }
+  .section h2 { margin-top:0; }
+  .green { background:#2e7d32; }
+  .yellow { background:#f9a825; }
+  .red { background:#c62828; }
+  .blue { background:#1565c0; }
+  .purple { background:#6a1b9a; }
+  .orange { background:#ef6c00; }
+  iframe { border:none; border-radius:8px; }
+  ul { padding-left:20px; }
+  .alert-flash { animation: flash 1s infinite; }
+  @keyframes flash { 0%, 100% { opacity:1; } 50% { opacity:0.3; } }
+</style>
+</head>
+<body>
+
+<header>🚀 Avantis Dashboard – Central Ultra Profissional</header>
+
+<div class="grid">
+  <div id="onchain" class="section blue">
+    <h2>🔎 On-Chain (Base)</h2>
+    <canvas id="xpChart" height="150"></canvas>
+    <p>Status: ✅</p>
+  </div>
+
+  <div id="social" class="section green">
+    <h2>📡 Social & Notícias</h2>
+    <iframe src="https://twitframe.com/show?url=https://x.com/avantisfi" width="100%" height="120"></iframe>
+    <iframe src="https://avantisfi.medium.com/" width="100%" height="120"></iframe>
+    <p>Status: ✅</p>
+  </div>
+
+  <div id="portal" class="section orange">
+    <h2>🌐 Portal Foundation</h2>
+    <iframe src="https://distill.io/dashboard" width="100%" height="150"></iframe>
+    <p>Status: ✅</p>
+  </div>
+
+  <div id="alerts" class="section purple">
+    <h2>⚡ Alertas Automáticos</h2>
+    <ul id="alertList">
+      <li>Basescan → ✅</li>
+      <li>Distill.io → ✅</li>
+      <li>Social Feeds → ✅</li>
+    </ul>
+  </div>
+
+  <div id="checklist" class="section gray">
+    <h2>✅ Checklist de Preparação</h2>
+    <ul>
+      <li id="wallet">Wallet Base pronta</li>
+      <li id="xp">XP acumulado</li>
+      <li id="referral">Referral codes ativos</li>
+      <li id="links">Links oficiais verificados</li>
+    </ul>
+  </div>
+
+  <div id="status" class="section blue">
+    <h2>🕹️ Painel de Status</h2>
+    <p>Todos os feeds ativos</p>
+  </div>
+</div>
+
+<audio id="alertSound" src="https://www.myinstants.com/media/sounds/bell-notification.mp3"></audio>
+
+<script>
+  // Gráficos de XP e Tokens (simulação)
+  const ctx = document.getElementById('xpChart').getContext('2d');
+  const xpChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Dia 1','Dia 2','Dia 3','Dia 4','Dia 5','Dia 6','Dia 7'],
+      datasets: [
+        { label: 'XP acumulado', data: [120,200,180,250,300,280,350], borderColor:'#fff', backgroundColor:'rgba(255,255,255,0.2)', fill:true, tension:0.3 },
+        { label: 'Tokens farmados', data: [50,80,75,120,150,140,170], borderColor:'#ffb74d', backgroundColor:'rgba(255,183,77,0.2)', fill:true, tension:0.3 }
+      ]
+    },
+    options: {
+      responsive:true,
+      plugins:{legend:{labels:{color:'#fff'}}},
+      scales:{ x:{ ticks:{color:'#fff'} }, y:{ ticks:{color:'#fff'} } }
+    }
+  });
+
+  // Função para atualizar status, alertas e notificações
+  function updateStatus(sectionId, status, message=null, sound=false) {
+    const sec = document.getElementById(sectionId);
+    sec.classList.remove('green','yellow','red','alert-flash');
+    if(status==='ok') sec.classList.add('green');
+    if(status==='pending') sec.classList.add('yellow','alert-flash');
+    if(status==='alert') sec.classList.add('red','alert-flash');
+
+    const p = sec.querySelector('p');
+    if(p) p.textContent = "Status: " + (status==='ok'?'✅': status==='pending'?'⚠':'❌');
+
+    if(message && sectionId==='alerts') {
+      const li = document.createElement('li');
+      li.textContent = message;
+      li.classList.add('alert-flash');
+      document.getElementById('alertList').appendChild(li);
+      if(sound) document.getElementById('alertSound').play();
+      if(Notification.permission==='granted') new Notification("⚡ Alerta Avantis", {body: message});
+    }
+  }
+
+  // Solicitar permissão de notificações
+  if(Notification.permission !== "granted") Notification.requestPermission();
+
+  // Simulação de alertas dinâmicos
+  setTimeout(()=> updateStatus('onchain','pending','Novo contrato detectado', true), 3000);
+  setTimeout(()=> updateStatus('social','alert','Novo post oficial no X!', true), 6000);
+  setTimeout(()=> updateStatus('portal','pending','Portal atualizado', true), 9000);
+  setTimeout(()=> updateStatus('alerts','alert','Basescan detectou movimento grande!', true), 12000);
+
+  // Atualização automática de gráfico (simulação)
+  setInterval(()=>{
+    const newXP = xpChart.data.datasets[0].data.map(v => v + Math.floor(Math.random()*10));
+    const newTokens = xpChart.data.datasets[1].data.map(v => v + Math.floor(Math.random()*5));
+    xpChart.data.datasets[0].data = newXP;
+    xpChart.data.datasets[1].data = newTokens;
+    xpChart.update();
+  }, 5000);
+</script>
+
+</body>
+</html>
