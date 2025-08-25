@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avantis Dashboard – Central Ultra Profissional</title>
+<title>Avantis Dashboard – GitHub Pages</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body { font-family: Arial, sans-serif; background:#111; color:#fff; margin:0; padding:0; display:flex; flex-direction:column; align-items:center; }
@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<header>🚀 Avantis Dashboard – Central Ultra Profissional</header>
+<header>🚀 Avantis Dashboard – GitHub Pages</header>
 
 <div class="grid">
   <div id="onchain" class="section blue">
@@ -73,7 +73,8 @@
   </div>
 </div>
 
-<audio id="alertSound" src="https://www.myinstants.com/media/sounds/bell-notification.mp3"></audio>
+<!-- Áudio hospedado online -->
+<audio id="alertSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"></audio>
 
 <script>
   // Gráficos de XP e Tokens (simulação)
